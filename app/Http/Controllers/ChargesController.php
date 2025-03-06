@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Charges;
+use App\Models\Charges;
 use Illuminate\Http\Request;
 
 class ChargesController extends Controller

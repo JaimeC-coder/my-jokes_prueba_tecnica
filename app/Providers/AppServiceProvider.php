@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\AuthenticateWithToken;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\Route;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::aliasMiddleware('auth.token', AuthenticateWithToken::class);
     }
 }

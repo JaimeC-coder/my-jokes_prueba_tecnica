@@ -15,6 +15,13 @@ class CreateChargesTable extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_card_id')->constrained()->onDelete('cascade');
+            $table->string('stripe_charge_id');
+            $table->decimal('amount', 10, 2);
+            $table->string('currency', 3)->default('usd');
+            $table->string('status', 50);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

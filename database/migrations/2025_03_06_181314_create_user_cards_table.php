@@ -15,6 +15,13 @@ class CreateUserCardsTable extends Migration
     {
         Schema::create('user_cards', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('stripe_payment_method_id');
+            $table->string('last_four', 4);
+            $table->string('brand', 50);
+            $table->integer('exp_month');
+            $table->integer('exp_year');
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
     }

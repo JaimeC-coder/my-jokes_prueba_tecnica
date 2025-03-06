@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UserCard;
+use App\Model\UserCard;
 use Illuminate\Http\Request;
 
 class UserCardController extends Controller

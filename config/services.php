@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'stripe' => [
+        'url' => env('STRIPE_URL','https://api.stripe.com'),
+        'key' => env('STRIPE_PUBLIC_KEY',''),
+        'secret' => env('STRIPE_SECRET_KEY',''),
+    ],
+
 ];
