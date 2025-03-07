@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Configurations;
@@ -8,8 +9,9 @@ use App\Repositories\ChargeRepository;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\PaymentMethod;
-use Stripe\Charge;
+use Stripe\PaymentIntent;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class StripeService
 {
@@ -61,15 +63,19 @@ class StripeService
     public function createPaymentMethod($cardData)
     {
         try {
-            return PaymentMethod::create([
-                'type' => 'card',
-                'card' => [
-                    'number' => $cardData['number'],
-                    'exp_month' => $cardData['exp_month'],
-                    'exp_year' => $cardData['exp_year'],
-                    'cvc' => $cardData['cvc'],
-                ],
-            ]);
+
+            $paymentMethodId = $cardData['payment_method'];
+
+
+            if (!$paymentMethodId) {
+                return response()->json(['error' => 'Payment method ID is required'], 400);
+            }
+
+
+            $paymentMethod = PaymentMethod::retrieve($paymentMethodId);
+
+            return $paymentMethod;
+
         } catch (Exception $e) {
             throw new Exception('Failed to create payment method: ' . $e->getMessage());
         }
@@ -103,23 +109,20 @@ class StripeService
     public function registerCard($user, $cardData)
     {
         try {
-            // Check if user has a Stripe customer ID, if not create one
+
             $customerId = $user->stripe_customer_id;
             if (!$customerId) {
                 $customerId = $this->createCustomer($user);
             }
 
-            // Create payment method
             $paymentMethod = $this->createPaymentMethod($cardData);
 
-            // Attach payment method to customer
             $this->attachPaymentMethod($paymentMethod->id, $customerId);
 
-            // Store card in our database
             $card = $this->cardRepository->create([
                 'user_id' => $user->id,
                 'stripe_payment_method_id' => $paymentMethod->id,
-                'last_four' => substr($cardData['number'], -4),
+                'last_four' => $paymentMethod->card->last4,
                 'brand' => $paymentMethod->card->brand,
                 'exp_month' => $paymentMethod->card->exp_month,
                 'exp_year' => $paymentMethod->card->exp_year,
@@ -147,19 +150,19 @@ class StripeService
     public function chargeCard($user, $card, $amount, $currency = 'usd', $description = null)
     {
         try {
-            // Amount in cents
+
             $amountInCents = (int)($amount * 100);
 
-            // Create charge in Stripe
-            $charge = Charge::create([
+            $charge = PaymentIntent::create([
                 'amount' => $amountInCents,
                 'currency' => $currency,
+                'payment_method_types' => ['card'],
+                'payment_method' => $card->stripe_payment_method_id,
+                'confirm' => true,
                 'customer' => $user->stripe_customer_id,
-                'source' => $card->stripe_payment_method_id,
                 'description' => $description ?? "Charge for {$user->email}",
             ]);
 
-            // Store charge in our database
             $chargeRecord = $this->chargeRepository->create([
                 'user_id' => $user->id,
                 'user_card_id' => $card->id,
