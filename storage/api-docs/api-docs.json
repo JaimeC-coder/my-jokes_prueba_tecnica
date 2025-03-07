@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "My Jokes API",
-        "description": "API for My Jokes application",
+        "description": "API para la aplicación My Jokes",
         "contact": {
             "name": "Jaime Centurion",
             "email": "centurionjaime@gmail.com"
@@ -19,11 +19,11 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "Authentication"
+                    "Autenticación"
                 ],
-                "summary": "Register a new user",
-                "description": "Register a new user with email, password, and other details",
-                "operationId": "register",
+                "summary": "Registrar un nuevo usuario",
+                "description": "Registrar un nuevo usuario con correo electrónico, contraseña y otros detalles",
+                "operationId": "registro",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -39,16 +39,16 @@
                                 "properties": {
                                     "first_name": {
                                         "type": "string",
-                                        "example": "John"
+                                        "example": "Eduardo"
                                     },
                                     "last_name": {
                                         "type": "string",
-                                        "example": "Doe"
+                                        "example": "Centurión"
                                     },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "john@example.com"
+                                        "example": "centurionjaime@example.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -57,7 +57,7 @@
                                     },
                                     "phone_number": {
                                         "type": "string",
-                                        "example": "+12345678901"
+                                        "example": "+999999999"
                                     }
                                 },
                                 "type": "object"
@@ -90,20 +90,20 @@
                                                         },
                                                         "first_name": {
                                                             "type": "string",
-                                                            "example": "John"
+                                                            "example": "Eduardo"
                                                         },
                                                         "last_name": {
                                                             "type": "string",
-                                                            "example": "Doe"
+                                                            "example": "Centurion"
                                                         },
                                                         "email": {
                                                             "type": "string",
                                                             "format": "email",
-                                                            "example": "john@example.com"
+                                                            "example": "jaimecenturion@example.com"
                                                         },
                                                         "phone_number": {
                                                             "type": "string",
-                                                            "example": "+12345678901"
+                                                            "example": "+999999999"
                                                         }
                                                     },
                                                     "type": "object"
@@ -122,7 +122,7 @@
                         }
                     },
                     "400": {
-                        "description": "Validation error",
+                        "description": "Error de validación",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -147,10 +147,10 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "Authentication"
+                    "Autenticación"
                 ],
-                "summary": "User login",
-                "description": "Login a user with email and password",
+                "summary": "Inicio de sesión de usuario",
+                "description": "Ingresa a una usuario con correo electrónico y contraseña.",
                 "operationId": "login",
                 "requestBody": {
                     "required": true,
@@ -165,7 +165,7 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "john@example.com"
+                                        "example": "jaimecenturion@example.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -203,20 +203,20 @@
                                                         },
                                                         "first_name": {
                                                             "type": "string",
-                                                            "example": "John"
+                                                            "example": "Eduardo"
                                                         },
                                                         "last_name": {
                                                             "type": "string",
-                                                            "example": "Doe"
+                                                            "example": "Centurion"
                                                         },
                                                         "email": {
                                                             "type": "string",
                                                             "format": "email",
-                                                            "example": "john@example.com"
+                                                            "example": "jaimecenturion@example.com"
                                                         },
                                                         "phone_number": {
                                                             "type": "string",
-                                                            "example": "+12345678901"
+                                                            "example": "+999999999"
                                                         }
                                                     },
                                                     "type": "object"
@@ -235,7 +235,7 @@
                         }
                     },
                     "401": {
-                        "description": "Authentication failed",
+                        "description": "Autenticación failed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -262,8 +262,8 @@
                 "tags": [
                     "Cards"
                 ],
-                "summary": "Register a new card",
-                "description": "Register a new card for the authenticated user",
+                "summary": "Registrar una nueva tarjeta",
+                "description": "Registrar una nueva tarjeta para el usuario autenticado",
                 "operationId": "registerCard",
                 "requestBody": {
                     "required": true,
@@ -277,21 +277,9 @@
                                     "cvc"
                                 ],
                                 "properties": {
-                                    "number": {
+                                    "payment_method": {
                                         "type": "string",
-                                        "example": "4242424242424242"
-                                    },
-                                    "exp_month": {
-                                        "type": "integer",
-                                        "example": 12
-                                    },
-                                    "exp_year": {
-                                        "type": "integer",
-                                        "example": 2026
-                                    },
-                                    "cvc": {
-                                        "type": "string",
-                                        "example": "123"
+                                        "example": "pm_card_visa"
                                     }
                                 },
                                 "type": "object"
@@ -376,8 +364,8 @@
                 "tags": [
                     "Cards"
                 ],
-                "summary": "List user cards",
-                "description": "List all cards for the authenticated user",
+                "summary": "Lista de tarjetas de usuario",
+                "description": "Lista de todas las tarjetas para el usuario autenticado",
                 "operationId": "listCards",
                 "responses": {
                     "200": {
@@ -465,8 +453,8 @@
                 "tags": [
                     "Cards"
                 ],
-                "summary": "Charge a card",
-                "description": "Charge a registered card for the authenticated user",
+                "summary": "Cargar una tarjeta",
+                "description": "Cargar una tarjeta registrada para el usuario autenticado",
                 "operationId": "chargeCard",
                 "requestBody": {
                     "required": true,
@@ -578,8 +566,8 @@
                 "tags": [
                     "Home"
                 ],
-                "summary": "Get home data",
-                "description": "Get random joke if user has card",
+                "summary": "Obtener datos de inicio",
+                "description": "Obtener broma al azar si el usuario tiene tarjeta",
                 "operationId": "home",
                 "responses": {
                     "200": {
@@ -684,8 +672,8 @@
     },
     "tags": [
         {
-            "name": "Authentication",
-            "description": "Authentication"
+            "name": "Autenticación",
+            "description": "Autenticación"
         },
         {
             "name": "Cards",

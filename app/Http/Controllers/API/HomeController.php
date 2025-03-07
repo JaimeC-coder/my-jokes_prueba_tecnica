@@ -25,8 +25,8 @@ class HomeController extends Controller
  * @OA\Get(
  *     path="/api/home",
  *     tags={"Home"},
- *     summary="Get home data",
- *     description="Get random joke if user has card",
+ *     summary="Obtener datos de inicio",
+ *     description="Obtener broma al azar si el usuario tiene tarjeta",
  *     operationId="home",
  *     security={{"api_token":{}}},
  *     @OA\Response(

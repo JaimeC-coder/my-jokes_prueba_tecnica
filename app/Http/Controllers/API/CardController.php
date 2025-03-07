@@ -29,18 +29,15 @@ class CardController extends Controller
      * @OA\Post(
      *     path="/api/register-card",
      *     tags={"Cards"},
-     *     summary="Register a new card",
-     *     description="Register a new card for the authenticated user",
+     *     summary="Registrar una nueva tarjeta",
+     *     description="Registrar una nueva tarjeta para el usuario autenticado",
      *     operationId="registerCard",
      *     security={{"api_token":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"number", "exp_month", "exp_year", "cvc"},
-     *             @OA\Property(property="number", type="string", example="4242424242424242"),
-     *             @OA\Property(property="exp_month", type="integer", example=12),
-     *             @OA\Property(property="exp_year", type="integer", example=2026),
-     *             @OA\Property(property="cvc", type="string", example="123")
+     *             @OA\Property(property="payment_method", type="string", example="pm_card_visa")
      *         )
      *     ),
      *     @OA\Response(
@@ -75,10 +72,7 @@ class CardController extends Controller
         try {
             // Validate request
             $request->validate([
-                'number' => 'required|string|min:15|max:16',
-                'exp_month' => 'required|integer|min:1|max:12',
-                'exp_year' => 'required|integer|min:2023',
-                'cvc' => 'required|string|min:3|max:4',
+                'payment_method' => 'required|string',
             ]);
 
             $token = $request->header('Authorization');
@@ -103,8 +97,8 @@ class CardController extends Controller
      * @OA\Get(
      *     path="/api/list-cards",
      *     tags={"Cards"},
-     *     summary="List user cards",
-     *     description="List all cards for the authenticated user",
+     *     summary="Lista de tarjetas de usuario",
+     *     description="Lista de todas las tarjetas para el usuario autenticado",
      *     operationId="listCards",
      *     security={{"api_token":{}}},
      *     @OA\Response(
@@ -174,8 +168,8 @@ class CardController extends Controller
      * @OA\Post(
      *     path="/api/charge-card",
      *     tags={"Cards"},
-     *     summary="Charge a card",
-     *     description="Charge a registered card for the authenticated user",
+     *     summary="Cargar una tarjeta",
+     *     description="Cargar una tarjeta registrada para el usuario autenticado",
      *     operationId="chargeCard",
      *     security={{"api_token":{}}},
      *     @OA\RequestBody(

@@ -25,17 +25,7 @@ class AuthService
      */
     public function register(array $data)
     {
-        $validator = Validator::make($data, [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'phone_number' => 'required|string|max:20',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
+       
 
         return $this->userRepository->create($data);
     }

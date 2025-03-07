@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Info(
  *     title="My Jokes API",
  *     version="1.0.0",
- *     description="API for My Jokes application",
+ *     description="API para la aplicación My Jokes",
  *     @OA\Contact(
  *         email="centurionjaime@gmail.com",
  *         name="Jaime Centurion"

@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\loginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -20,19 +22,19 @@ class AuthController extends Controller
   /**
      * @OA\Post(
      *     path="/api/register",
-     *     tags={"Authentication"},
-     *     summary="Register a new user",
-     *     description="Register a new user with email, password, and other details",
-     *     operationId="register",
+     *     tags={"Autenticación"},
+     *     summary="Registrar un nuevo usuario",
+     *     description="Registrar un nuevo usuario con correo electrónico, contraseña y otros detalles",
+     *     operationId="registro",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"first_name", "last_name", "email", "password", "phone_number"},
-     *             @OA\Property(property="first_name", type="string", example="John"),
-     *             @OA\Property(property="last_name", type="string", example="Doe"),
-     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="first_name", type="string", example="Eduardo"),
+     *             @OA\Property(property="last_name", type="string", example="Centurión"),
+     *             @OA\Property(property="email", type="string", format="email", example="centurionjaime@example.com"),
      *             @OA\Property(property="password", type="string", format="password", example="password123"),
-     *             @OA\Property(property="phone_number", type="string", example="+12345678901")
+     *             @OA\Property(property="phone_number", type="string", example="+999999999")
      *         )
      *     ),
      *     @OA\Response(
@@ -48,10 +50,10 @@ class AuthController extends Controller
      *                     property="user",
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="first_name", type="string", example="John"),
-     *                     @OA\Property(property="last_name", type="string", example="Doe"),
-     *                     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
-     *                     @OA\Property(property="phone_number", type="string", example="+12345678901")
+     *                     @OA\Property(property="first_name", type="string", example="Eduardo"),
+     *                     @OA\Property(property="last_name", type="string", example="Centurion"),
+     *                     @OA\Property(property="email", type="string", format="email", example="jaimecenturion@example.com"),
+     *                     @OA\Property(property="phone_number", type="string", example="+999999999")
      *                 ),
      *                 @OA\Property(property="token", type="string", example="api_token_here")
      *             )
@@ -59,7 +61,7 @@ class AuthController extends Controller
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="Validation error",
+     *         description="Error de validación",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="error"),
      *             @OA\Property(property="message", type="string", example="The email field is required.")
@@ -67,7 +69,7 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
         try {
             $user = $this->authService->register($request->all());
@@ -97,15 +99,15 @@ class AuthController extends Controller
 /**
      * @OA\Post(
      *     path="/api/login",
-     *     tags={"Authentication"},
-     *     summary="User login",
-     *     description="Login a user with email and password",
+     *     tags={"Autenticación"},
+     *     summary="Inicio de sesión de usuario",
+     *     description="Ingresa a una usuario con correo electrónico y contraseña.",
      *     operationId="login",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="email", type="string", format="email", example="jaimecenturion@example.com"),
      *             @OA\Property(property="password", type="string", format="password", example="password123")
      *         )
      *     ),
@@ -122,10 +124,10 @@ class AuthController extends Controller
      *                     property="user",
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="first_name", type="string", example="John"),
-     *                     @OA\Property(property="last_name", type="string", example="Doe"),
-     *                     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
-     *                     @OA\Property(property="phone_number", type="string", example="+12345678901")
+     *                     @OA\Property(property="first_name", type="string", example="Eduardo"),
+     *                     @OA\Property(property="last_name", type="string", example="Centurion"),
+     *                     @OA\Property(property="email", type="string", format="email", example="jaimecenturion@example.com"),
+     *                     @OA\Property(property="phone_number", type="string", example="+999999999")
      *                 ),
      *                 @OA\Property(property="token", type="string", example="api_token_here")
      *             )
@@ -133,7 +135,7 @@ class AuthController extends Controller
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="Authentication failed",
+     *         description="Autenticación failed",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="error"),
      *             @OA\Property(property="message", type="string", example="BAD CREDENTIALS")
@@ -141,14 +143,10 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function login(Request $request): JsonResponse
+    public function login(loginRequest $request): JsonResponse
     {
         try {
-            // Validate request
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string',
-            ]);
+           
 
             $user = $this->authService->login($request->email, $request->password);
 
