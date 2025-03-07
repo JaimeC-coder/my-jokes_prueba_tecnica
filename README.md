@@ -84,4 +84,5 @@ Si tienes comentarios o dudas, no dudes en contactarnos:
 
 ---
 
-
+### Notas  
+1. Por ser una version anterior con la que se esta trabajando se debe crear la base de datos manualmente. 
