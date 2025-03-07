@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Card\CardChargeRequest;
+use App\Http\Requests\Card\CardRegisterRequest;
+use App\Http\Resources\Card\CardResourse;
 use App\Services\AuthService;
 use App\Services\StripeService;
 use App\Repositories\CardRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Stripe\Issuing\Card;
 
 class CardController extends Controller
 {
@@ -25,7 +30,7 @@ class CardController extends Controller
         $this->cardRepository = $cardRepository;
     }
 
- /**
+    /**
      * @OA\Post(
      *     path="/api/register-card",
      *     tags={"Cards"},
@@ -67,13 +72,10 @@ class CardController extends Controller
      *     )
      * )
      */
-    public function register(Request $request): JsonResponse
+    public function register(CardRegisterRequest $request): JsonResponse
     {
         try {
-            // Validate request
-            $request->validate([
-                'payment_method' => 'required|string',
-            ]);
+
 
             $token = $request->header('Authorization');
             $user = $this->authService->validateToken($token);
@@ -93,7 +95,7 @@ class CardController extends Controller
         }
     }
 
- /**
+    /**
      * @OA\Get(
      *     path="/api/list-cards",
      *     tags={"Cards"},
@@ -140,21 +142,10 @@ class CardController extends Controller
 
             $cards = $this->cardRepository->getUserCards($user->id);
 
-            $formattedCards = $cards->map(function ($card) {
-                return [
-                    'id' => $card->id,
-                    'last_four' => $card->last_four,
-                    'brand' => $card->brand,
-                    'exp_month' => $card->exp_month,
-                    'exp_year' => $card->exp_year,
-                    'is_default' => $card->is_default,
-                ];
-            });
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cards retrieved successfully',
-                'data' => $formattedCards
+                'data' =>  CardResourse::collection($cards)
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -164,7 +155,7 @@ class CardController extends Controller
         }
     }
 
-  /**
+    /**
      * @OA\Post(
      *     path="/api/charge-card",
      *     tags={"Cards"},
@@ -209,16 +200,11 @@ class CardController extends Controller
      *     )
      * )
      */
-    public function chargeCard(Request $request): JsonResponse
+    public function chargeCard(CardChargeRequest $request): JsonResponse
     {
         try {
             // Validate request
-            $request->validate([
-                'card_id' => 'required|integer|exists:user_cards,id',
-                'amount' => 'required|numeric|min:0.5',
-                'currency' => 'sometimes|string|size:3',
-                'description' => 'sometimes|string',
-            ]);
+
 
             $token = $request->header('Authorization');
             $user = $this->authService->validateToken($token);

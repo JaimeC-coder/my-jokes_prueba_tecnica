@@ -8,10 +8,16 @@ class UserCard extends Model
 {
     //
     protected $fillable = [
-        'user_id', 'stripe_payment_method_id', 'last_four', 'brand', 'exp_month', 'exp_year', 'is_default'
+        'user_id',
+        'stripe_payment_method_id',
+        'last_four',
+        'brand',
+        'exp_month',
+        'exp_year',
+        'is_default'
     ];
 
-     /**
+    /**
      * Get the user that owns the card.
      */
     public function user()

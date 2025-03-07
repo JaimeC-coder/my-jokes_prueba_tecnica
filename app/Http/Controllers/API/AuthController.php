@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\loginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\Auth\AuthResourse;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-  /**
+    /**
      * @OA\Post(
      *     path="/api/register",
      *     tags={"Autenticación"},
@@ -78,13 +79,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'User registered successfully',
                 'data' => [
-                    'user' => [
-                        'id' => $user->id,
-                        'first_name' => $user->first_name,
-                        'last_name' => $user->last_name,
-                        'email' => $user->email,
-                        'phone_number' => $user->phone_number,
-                    ],
+                    'user' =>  new AuthResourse($user),
                     'token' => $user->api_token
                 ]
             ], 201);
@@ -96,7 +91,7 @@ class AuthController extends Controller
         }
     }
 
-/**
+    /**
      * @OA\Post(
      *     path="/api/login",
      *     tags={"Autenticación"},
@@ -146,7 +141,7 @@ class AuthController extends Controller
     public function login(loginRequest $request): JsonResponse
     {
         try {
-           
+
 
             $user = $this->authService->login($request->email, $request->password);
 
@@ -154,13 +149,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'Login successful',
                 'data' => [
-                    'user' => [
-                        'id' => $user->id,
-                        'first_name' => $user->first_name,
-                        'last_name' => $user->last_name,
-                        'email' => $user->email,
-                        'phone_number' => $user->phone_number,
-                    ],
+                    'user' =>  new AuthResourse($user),
                     'token' => $user->api_token
                 ]
             ]);

@@ -21,51 +21,51 @@ class HomeController extends Controller
         $this->jokeService = $jokeService;
     }
 
-/**
- * @OA\Get(
- *     path="/api/home",
- *     tags={"Home"},
- *     summary="Obtener datos de inicio",
- *     description="Obtener broma al azar si el usuario tiene tarjeta",
- *     operationId="home",
- *     security={{"api_token":{}}},
- *     @OA\Response(
- *         response=200,
- *         description="Successful response",
- *         @OA\JsonContent(
- *             oneOf={
- *                 @OA\Schema(
- *                     type="object",
- *                     @OA\Property(property="status", type="string", example="success"),
- *                     @OA\Property(property="message", type="string", example="Joke retrieved successfully"),
- *                     @OA\Property(
- *                         property="data",
- *                         type="object",
- *                         @OA\Property(property="id", type="integer", example=1),
- *                         @OA\Property(property="category", type="string", example="Programming"),
- *                         @OA\Property(property="type", type="string", example="single"),
- *                         @OA\Property(property="joke", type="string", example="Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.")
- *                     )
- *                 ),
- *                 @OA\Schema(
- *                     type="object",
- *                     @OA\Property(property="status", type="string", example="warning"),
- *                     @OA\Property(property="message", type="string", example="PENDING_CARD"),
- *                     @OA\Property(property="data", type="null", example=null)
- *                 )
- *             }
- *         )
- *     ),
- *     @OA\Response(
- *         response=401,
- *         description="Unauthorized",
- *         @OA\JsonContent(
- *             @OA\Property(property="status", type="string", example="error"),
- *             @OA\Property(property="message", type="string", example="INVALID TOKEN")
- *         )
- *     )
- * )
- */
+    /**
+     * @OA\Get(
+     *     path="/api/home",
+     *     tags={"Home"},
+     *     summary="Obtener datos de inicio",
+     *     description="Obtener broma al azar si el usuario tiene tarjeta",
+     *     operationId="home",
+     *     security={{"api_token":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     type="object",
+     *                     @OA\Property(property="status", type="string", example="success"),
+     *                     @OA\Property(property="message", type="string", example="Joke retrieved successfully"),
+     *                     @OA\Property(
+     *                         property="data",
+     *                         type="object",
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="category", type="string", example="Programming"),
+     *                         @OA\Property(property="type", type="string", example="single"),
+     *                         @OA\Property(property="joke", type="string", example="Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.")
+     *                     )
+     *                 ),
+     *                 @OA\Schema(
+     *                     type="object",
+     *                     @OA\Property(property="status", type="string", example="warning"),
+     *                     @OA\Property(property="message", type="string", example="PENDING_CARD"),
+     *                     @OA\Property(property="data", type="null", example=null)
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="INVALID TOKEN")
+     *         )
+     *     )
+     * )
+     */
 
     public function index(Request $request): JsonResponse
     {
